@@ -2,6 +2,16 @@
 
 ## Examples
 
+### Import
+```motoko
+import ManagementTypes "mo:ic";
+let ic = actor("aaaaa-aa"): ManagementTypes.Service;
+```
+or
+```motoko
+import {ic} "mo:ic";
+```
+
 ### Fetch canister status
 ```motoko
 import {ic} "mo:ic";
@@ -18,7 +28,7 @@ Debug.print("settings = " # debug_show canisterStatus.settings);
 ### Update canister settings
 Here we set the canister controllers to a single blackhole canister.
 ```motoko
-import {ic, CanisterSettings} "mo:ic";
+import {ic; CanisterSettings} "mo:ic";
 
 let canisterId = Principal.fromText("e3mmv-5qaaa-aaaah-aadma-cai");
 let settings: CanisterSettings = {
