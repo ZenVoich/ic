@@ -4,8 +4,8 @@
 
 ### Import
 ```motoko
-import ManagementTypes "mo:ic";
-let ic = actor("aaaaa-aa"): ManagementTypes.Service;
+import IC "mo:ic";
+let ic = actor("aaaaa-aa"): IC.Service;
 ```
 or
 ```motoko

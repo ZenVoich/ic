@@ -119,7 +119,6 @@ module {
 				settings : CanisterSettings;
 			} -> async ();
 	};
-	public type IC = Service;
 
 	public let ic = actor("aaaaa-aa"): Service;
 }
