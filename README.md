@@ -1,11 +1,14 @@
-# IC management canister interface for Motoko
+# IC management canister interface
+
+[![mops](https://oknww-riaaa-aaaam-qaf6a-cai.raw.ic0.app/badge/mops/ic)](https://mops.one/ic)
+[![documentation](https://oknww-riaaa-aaaam-qaf6a-cai.raw.ic0.app/badge/documentation/ic)](https://mops.one/ic/docs)
 
 ## Examples
 
 ### Import
 ```motoko
 import IC "mo:ic";
-let ic = actor("aaaaa-aa"): IC.Service;
+let ic = actor("aaaaa-aa") : IC.Service;
 ```
 or
 ```motoko
@@ -31,7 +34,7 @@ Here we set the canister controllers to a single blackhole canister.
 import {ic; CanisterSettings} "mo:ic";
 
 let canisterId = Principal.fromText("e3mmv-5qaaa-aaaah-aadma-cai");
-let settings: CanisterSettings = {
+let settings : CanisterSettings = {
 	freezing_threshold = null;
 	controllers = ?[Principal.fromText("e3mmv-5qaaa-aaaah-aadma-cai")];
 	memory_allocation = null;

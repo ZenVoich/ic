@@ -120,5 +120,5 @@ module {
 			} -> async ();
 	};
 
-	public let ic = actor("aaaaa-aa"): Service;
+	public let ic = actor("aaaaa-aa") : Service;
 }
