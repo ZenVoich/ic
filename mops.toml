@@ -3,3 +3,5 @@ name = "ic"
 version = "1.0.0"
 description = "IC management canister interface"
 repository = "https://github.com/ZenVoich/ic"
+keywords = ["ic", "types", "interface"]
+license = "MIT"
