@@ -1,3 +1,6 @@
+## 1.0.1
+- Add license and keywords to `mops.toml`
+
 ## 1.0.0
 - Updated interface to the latest version
 - New methods:
