@@ -3,6 +3,8 @@
 [![mops](https://oknww-riaaa-aaaam-qaf6a-cai.raw.ic0.app/badge/mops/ic)](https://mops.one/ic)
 [![documentation](https://oknww-riaaa-aaaam-qaf6a-cai.raw.ic0.app/badge/documentation/ic)](https://mops.one/ic/docs)
 
+Based on https://github.com/dfinity/interface-spec/blob/master/spec/_attachments/ic.did
+
 ## Examples
 
 ### Import
