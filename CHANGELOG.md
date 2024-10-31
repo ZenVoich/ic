@@ -1,3 +1,22 @@
+## 2.0.0
+
+Changes:
+- Added `#regtest` to `BitcoinNetwork` type
+
+Added methods:
+- `bitcoin_get_block_headers`
+- `delete_canister_snapshot`
+- `fetch_canister_logs`
+- `list_canister_snapshots`
+- `load_canister_snapshot`
+- `schnorr_public_key`
+- `sign_with_schnorr`
+- `take_canister_snapshot`
+
+Removed methods:
+- `bitcoin_get_balance_query` (query version removed)
+- `bitcoin_get_utxos_query` (query version removed)
+
 ## 1.0.1
 - Add license and keywords to `mops.toml`
 
