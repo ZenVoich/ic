@@ -5,3 +5,6 @@ description = "IC management canister interface (aaaaa-aa)"
 repository = "https://github.com/ZenVoich/ic"
 keywords = [ "ic", "types", "interface" ]
 license = "MIT"
+
+[toolchain]
+moc = "0.14.10"
