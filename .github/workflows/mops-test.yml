@@ -1,0 +1,25 @@
+name: mops test
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: ZenVoich/setup-mops@v1
+
+      - name: install mops packages
+        run: mops install
+
+      - name: run tests
+        run: mops test
