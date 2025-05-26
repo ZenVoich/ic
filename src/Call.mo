@@ -64,7 +64,7 @@ module {
       let (code, cyclesOrArbitrary) = Prim.costSignWithEcdsa(keyName, curveEncoding);
       switch (code) {
         case 0 #ok(cyclesOrArbitrary);
-        case 1 #err(#invalidCurveOrAlgorithm);
+        case 1 Debug.trap("Unexpected error: Invalid ecdsa curve encoding.");
         case 2 #err(#invalidKeyName);
         case _ Debug.trap("Invalid error code returned from Prim.costSignWithEcdsa");
       };
@@ -78,7 +78,7 @@ module {
       let (code, cyclesOrArbitrary) = Prim.costSignWithSchnorr(keyName, algorithmEncoding);
       switch (code) {
         case 0 #ok(cyclesOrArbitrary);
-        case 1 #err(#invalidCurveOrAlgorithm);
+        case 1 Debug.trap("Unexpected error: Invalid schnorr algorithm encoding.");
         case 2 #err(#invalidKeyName);
         case _ Debug.trap("Invalid error code returned from Prim.costSignWithSchnorr");
       };
@@ -119,7 +119,6 @@ module {
   };
 
   public type SignError = {
-    #invalidCurveOrAlgorithm;
     #invalidKeyName;
   };
 
