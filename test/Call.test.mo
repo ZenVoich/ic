@@ -18,11 +18,11 @@ actor {
       func() : async () {
         let cycles = Call.Cost.createCanister();
         ignore await (with cycles) IC.ic.create_canister(createCanisterArgs);
-        await expectThrows(
+        await expect.call(
           func() : async () {
             ignore await (with cycles = cycles - 1) IC.ic.create_canister(createCanisterArgs);
           }
-        );
+        ).reject();
       },
     );
 
@@ -60,11 +60,11 @@ actor {
   func httpRequestExactCost(request : IC.HttpRequestArgs) : () -> async () = func() : async () {
     let cycles = Call.Cost.httpRequest(request);
     ignore await (with cycles) IC.ic.http_request(request);
-    await expectThrows(
+    await expect.call(
       func() : async () {
         ignore await (with cycles = cycles - 1) IC.ic.http_request(request);
       }
-    );
+    ).reject();
   };
 
   public shared query func transformFunction({
@@ -73,15 +73,6 @@ actor {
   }) : async IC.HttpRequestResult {
     ignore context;
     { response with headers = []; status = 200 };
-  };
-
-  func expectThrows(f : () -> async ()) : async () {
-    expect.bool(
-      try {
-        await f();
-        false;
-      } catch _ true
-    ).isTrue();
   };
 
   let createCanisterArgs : IC.CreateCanisterArgs = {
