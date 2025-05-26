@@ -63,6 +63,7 @@ actor {
     await test(
       "trySignWithEcdsa should succeed",
       func() : async () {
+        ignore await Call.signWithEcdsa(ecdsaArgs(caller, #secp256k1, "test_key_1"));
         expectResult(await Call.trySignWithEcdsa(ecdsaArgs(caller, #secp256k1, "test_key_1"))).isOk();
         expectResult(await Call.trySignWithEcdsa(ecdsaArgs(caller, #secp256k1, "wrong key"))).equal(#err(#invalidKeyName));
       },
@@ -85,6 +86,8 @@ actor {
     await test(
       "trySignWithSchnorr should succeed",
       func() : async () {
+        ignore await Call.signWithSchnorr(schnorrArgs(caller, #bip340secp256k1, "test_key_1"));
+        ignore await Call.signWithSchnorr(schnorrArgs(caller, #ed25519, "test_key_1"));
         expectResult(await Call.trySignWithSchnorr(schnorrArgs(caller, #bip340secp256k1, "test_key_1"))).isOk();
         expectResult(await Call.trySignWithSchnorr(schnorrArgs(caller, #ed25519, "test_key_1"))).isOk();
         expectResult(await Call.trySignWithSchnorr(schnorrArgs(caller, #ed25519, "wrong key"))).equal(#err(#invalidKeyName));
