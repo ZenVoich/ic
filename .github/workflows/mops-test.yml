@@ -16,8 +16,6 @@ jobs:
         with:
           node-version: 20
       - uses: ZenVoich/setup-mops@v1
-        with:
-          mops-version: 1.7.2-pre.0
 
       - name: Install dfx
         uses: dfinity/setup-dfx@main
