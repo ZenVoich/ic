@@ -1,7 +1,8 @@
 import Blob "mo:base/Blob";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
-import { suite; test; expect } "mo:test/async";
+import Debug "mo:base/Debug";
+import { suite; test; expect; fail } "mo:test/async";
 import ExpectResult "mo:test/expect/expect-result";
 
 import IC "../src";
@@ -66,6 +67,43 @@ actor {
         expectResult(await Call.trySignWithEcdsa(ecdsaArgs(caller, #secp256k1, "wrong key"))).equal(#err(#invalidKeyName));
       },
     );
+
+    await test(
+      "sign_with_ecdsa cost should be exact",
+      func() : async () {
+        let args = ecdsaArgs(caller, #secp256k1, "test_key_1");
+        let (#ok cycles) = Call.Cost.signWithEcdsa(args.key_id.name, args.key_id.curve) else Debug.trap("cost of sign_with_ecdsa should succeed");
+        ignore await (with cycles) IC.ic.sign_with_ecdsa(args);
+        await expect.call(
+          func() : async () {
+            ignore await (with cycles = cycles - 1) IC.ic.sign_with_ecdsa(args);
+          }
+        ).reject();
+      },
+    );
+
+    await test(
+      "trySignWithSchnorr should succeed",
+      func() : async () {
+        expectResult(await Call.trySignWithSchnorr(schnorrArgs(caller, #bip340secp256k1, "test_key_1"))).isOk();
+        expectResult(await Call.trySignWithSchnorr(schnorrArgs(caller, #ed25519, "test_key_1"))).isOk();
+        expectResult(await Call.trySignWithSchnorr(schnorrArgs(caller, #ed25519, "wrong key"))).equal(#err(#invalidKeyName));
+      },
+    );
+
+    await test(
+      "sign_with_schnorr cost should be exact",
+      func() : async () {
+        let args = schnorrArgs(caller, #ed25519, "test_key_1");
+        let (#ok cycles) = Call.Cost.signWithSchnorr(args.key_id.name, args.key_id.algorithm) else Debug.trap("cost of sign_with_schnorr should succeed");
+        ignore await (with cycles) IC.ic.sign_with_schnorr(args);
+        await expect.call(
+          func() : async () {
+            ignore await (with cycles = cycles - 1) IC.ic.sign_with_schnorr(args);
+          }
+        ).reject();
+      },
+    );
   };
 
   func httpRequestExactCost(request : IC.HttpRequestArgs) : () -> async () = func() : async () {
@@ -125,5 +163,11 @@ actor {
     derivation_path = [Principal.toBlob(caller)];
     key_id = { curve; name = keyName };
     message_hash = fakeMessageHash;
+  };
+
+  func schnorrArgs(caller : Principal, algorithm : IC.SchnorrAlgorithm, keyName : Text) : IC.SignWithSchnorrArgs = {
+    derivation_path = [Principal.toBlob(caller)];
+    key_id = { algorithm; name = keyName };
+    message = fakeMessageHash;
   };
 };
