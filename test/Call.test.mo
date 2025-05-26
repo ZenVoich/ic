@@ -2,7 +2,7 @@ import Blob "mo:base/Blob";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Debug "mo:base/Debug";
-import { suite; test; expect; fail } "mo:test/async";
+import { suite; test; expect } "mo:test/async";
 import ExpectResult "mo:test/expect/expect-result";
 
 import IC "../src";
