@@ -22,15 +22,17 @@ module {
     await (with cycles = Cost.httpRequest(args)) IC.ic.http_request(args);
   };
 
-  public func trySignWithEcdsa(args : IC.SignWithEcdsaArgs, keyName : Text, curve : IC.EcdsaCurve) : async Result<IC.SignWithEcdsaResult, SignError> {
-    switch (Cost.signWithEcdsa(keyName, curve)) {
+  public func trySignWithEcdsa(args : IC.SignWithEcdsaArgs) : async Result<IC.SignWithEcdsaResult, SignError> {
+    let { name; curve } = args.key_id;
+    switch (Cost.signWithEcdsa(name, curve)) {
       case (#ok(cycles)) #ok(await (with cycles) IC.ic.sign_with_ecdsa(args));
       case (#err(error)) #err(error);
     };
   };
 
-  public func trySignWithSchnorr(args : IC.SignWithSchnorrArgs, keyName : Text, algorithm : IC.SchnorrAlgorithm) : async Result<IC.SignWithSchnorrResult, SignError> {
-    switch (Cost.signWithSchnorr(keyName, algorithm)) {
+  public func trySignWithSchnorr(args : IC.SignWithSchnorrArgs) : async Result<IC.SignWithSchnorrResult, SignError> {
+    let { name; algorithm } = args.key_id;
+    switch (Cost.signWithSchnorr(name, algorithm)) {
       case (#ok(cycles)) #ok(await (with cycles) IC.ic.sign_with_schnorr(args));
       case (#err(error)) #err(error);
     };

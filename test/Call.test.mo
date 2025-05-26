@@ -1,11 +1,14 @@
 import Blob "mo:base/Blob";
+import Principal "mo:base/Principal";
+import Result "mo:base/Result";
 import { suite; test; expect } "mo:test/async";
+import ExpectResult "mo:test/expect/expect-result";
 
-import IC "../src/lib";
+import IC "../src";
 import Call "../src/Call";
 
 actor {
-  public func runTests() : async () {
+  public shared ({ caller }) func runTests() : async () {
     await test(
       "createCanister should succeed",
       func() : async () {
@@ -14,7 +17,7 @@ actor {
     );
 
     await test(
-      "createCanister cost should be exact",
+      "create_canister cost should be exact",
       func() : async () {
         let cycles = Call.Cost.createCanister();
         ignore await (with cycles) IC.ic.create_canister(createCanisterArgs);
@@ -43,7 +46,7 @@ actor {
     );
 
     await suite(
-      "httpRequest cost should be exact",
+      "http_request cost should be exact",
       func() : async () {
         await test("default", httpRequestExactCost(request));
         await test("with headers", httpRequestExactCost({ request with headers }));
@@ -53,6 +56,14 @@ actor {
 
         // Future work: transform can't be exact yet
         // await test("with transform", httpRequestExactCost({ request with transform }));
+      },
+    );
+
+    await test(
+      "trySignWithEcdsa should succeed",
+      func() : async () {
+        expectResult(await Call.trySignWithEcdsa(ecdsaArgs(caller, #secp256k1, "test_key_1"))).isOk();
+        expectResult(await Call.trySignWithEcdsa(ecdsaArgs(caller, #secp256k1, "wrong key"))).equal(#err(#invalidKeyName));
       },
     );
   };
@@ -66,6 +77,19 @@ actor {
       }
     ).reject();
   };
+
+  func expectResult<Ok, Err>(result : Result.Result<Ok, Err>) : ExpectResult.ExpectResult<Ok, Err> = expect.result<Ok, Err>(
+    result,
+    func r = switch r {
+      case (#ok _) "ok";
+      case (#err _) "err";
+    },
+    func(a, b) = switch (a, b) {
+      case (#ok _, #ok _) true;
+      case (#err _, #err _) true;
+      case _ false;
+    },
+  );
 
   public shared query func transformFunction({
     context : Blob;
@@ -94,5 +118,12 @@ actor {
   let transform = ?{
     function = transformFunction;
     context = Blob.fromArray([23, 41, 13, 6, 17]);
+  };
+  let fakeMessageHash = Blob.fromArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
+
+  func ecdsaArgs(caller : Principal, curve : IC.EcdsaCurve, keyName : Text) : IC.SignWithEcdsaArgs = {
+    derivation_path = [Principal.toBlob(caller)];
+    key_id = { curve; name = keyName };
+    message_hash = fakeMessageHash;
   };
 };
