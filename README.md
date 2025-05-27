@@ -3,7 +3,9 @@
 [![mops](https://oknww-riaaa-aaaam-qaf6a-cai.raw.ic0.app/badge/mops/ic)](https://mops.one/ic)
 [![documentation](https://oknww-riaaa-aaaam-qaf6a-cai.raw.ic0.app/badge/documentation/ic)](https://mops.one/ic/docs)
 
-Based on https://github.com/dfinity/interface-spec/blob/master/spec/_attachments/ic.did
+Based on https://github.com/dfinity/portal/blob/master/docs/references/_attachments/ic.did
+
+See [Call](https://mops.one/ic/docs/Call) module documentation for automatic calculation of the minimum amount of cycles and attaching them to the call.
 
 ## Examples
 

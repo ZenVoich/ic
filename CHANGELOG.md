@@ -1,3 +1,6 @@
+## 2.1.0
+- Added wrappers for `ic` calls like `http_request` that automatically calculate the minimum amount of cycles and attach them with the call (by @Kamirus)
+
 ## 2.0.0
 
 Changes:
