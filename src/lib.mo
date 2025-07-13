@@ -66,6 +66,7 @@ module {
 	};
 	public type CanisterSettings = {
 		freezing_threshold : ?Nat;
+		wasm_memory_threshold : ?Nat;
 		controllers : ?[Principal];
 		reserved_cycles_limit : ?Nat;
 		log_visibility : ?LogVisibility;
@@ -75,6 +76,16 @@ module {
 	};
 	public type CanisterStatusArgs = { canister_id : CanisterId };
 	public type CanisterStatusResult = {
+		memory_metrics : {
+			wasm_binary_size : Nat;
+			wasm_chunk_store_size : Nat;
+			canister_history_size : Nat;
+			stable_memory_size : Nat;
+			snapshots_size : Nat;
+			wasm_memory_size : Nat;
+			global_memory_size : Nat;
+			custom_sections_size : Nat;
+		};
 		status : { #stopped; #stopping; #running };
 		memory_size : Nat;
 		cycles : Nat;
@@ -122,6 +133,7 @@ module {
 	public type CreateCanisterResult = { canister_id : CanisterId };
 	public type DefiniteCanisterSettings = {
 		freezing_threshold : Nat;
+		wasm_memory_threshold : Nat;
 		controllers : [Principal];
 		reserved_cycles_limit : Nat;
 		log_visibility : LogVisibility;
@@ -192,7 +204,11 @@ module {
 		sender_canister_version : ?Nat64;
 		snapshot_id : SnapshotId;
 	};
-	public type LogVisibility = { #controllers; #public_ };
+	public type LogVisibility = {
+		#controllers;
+		#public_;
+		#allowed_viewers : [Principal];
+	};
 	public type MillisatoshiPerByte = Nat64;
 	public type NodeMetrics = {
 		num_block_failures_total : Nat64;
@@ -223,6 +239,7 @@ module {
 	public type RawRandResult = Blob;
 	public type Satoshi = Nat64;
 	public type SchnorrAlgorithm = { #ed25519; #bip340secp256k1 };
+	public type SchnorrAux = { #bip341 : { merkle_root_hash : Blob } };
 	public type SchnorrPublicKeyArgs = {
 		key_id : { algorithm : SchnorrAlgorithm; name : Text };
 		canister_id : ?CanisterId;
@@ -239,6 +256,7 @@ module {
 	};
 	public type SignWithEcdsaResult = { signature : Blob };
 	public type SignWithSchnorrArgs = {
+		aux : ?SchnorrAux;
 		key_id : { algorithm : SchnorrAlgorithm; name : Text };
 		derivation_path : [Blob];
 		message : Blob;
@@ -254,12 +272,14 @@ module {
 	public type StopCanisterArgs = { canister_id : CanisterId };
 	public type StoredChunksArgs = { canister_id : CanisterId };
 	public type StoredChunksResult = [ChunkHash];
+	public type SubnetInfoArgs = { subnet_id : Principal };
+	public type SubnetInfoResult = { replica_version : Text };
 	public type TakeCanisterSnapshotArgs = {
 		replace_snapshot : ?SnapshotId;
 		canister_id : CanisterId;
 	};
 	public type TakeCanisterSnapshotResult = Snapshot;
-	public type uninstall_code_args = {
+	public type UninstallCodeArgs = {
 		canister_id : CanisterId;
 		sender_canister_version : ?Nat64;
 	};
@@ -271,6 +291,20 @@ module {
 	public type UploadChunkArgs = { chunk : Blob; canister_id : Principal };
 	public type UploadChunkResult = ChunkHash;
 	public type Utxo = { height : Nat32; value : Satoshi; outpoint : Outpoint };
+	public type VetkdCurve = { #bls12_381_g2 };
+	public type VetkdDeriveKeyArgs = {
+		context : Blob;
+		key_id : { name : Text; curve : VetkdCurve };
+		input : Blob;
+		transport_public_key : Blob;
+	};
+	public type VetkdDeriveKeyResult = { encrypted_key : Blob };
+	public type VetkdPublicKeyArgs = {
+		context : Blob;
+		key_id : { name : Text; curve : VetkdCurve };
+		canister_id : ?CanisterId;
+	};
+	public type VetkdPublicKeyResult = { public_key : Blob };
 	public type WasmModule = Blob;
 
 	public type Service = actor {
@@ -303,10 +337,13 @@ module {
 		start_canister : shared StartCanisterArgs -> async ();
 		stop_canister : shared StopCanisterArgs -> async ();
 		stored_chunks : shared StoredChunksArgs -> async StoredChunksResult;
+		subnet_info : shared SubnetInfoArgs -> async SubnetInfoResult;
 		take_canister_snapshot : shared TakeCanisterSnapshotArgs -> async TakeCanisterSnapshotResult;
-		uninstall_code : shared uninstall_code_args -> async ();
+		uninstall_code : shared UninstallCodeArgs -> async ();
 		update_settings : shared UpdateSettingsArgs -> async ();
 		upload_chunk : shared UploadChunkArgs -> async UploadChunkResult;
+		vetkd_derive_key : shared VetkdDeriveKeyArgs -> async VetkdDeriveKeyResult;
+		vetkd_public_key : shared VetkdPublicKeyArgs -> async VetkdPublicKeyResult;
 	};
 
 	public let ic = actor("aaaaa-aa") : Service;

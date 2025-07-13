@@ -172,5 +172,6 @@ actor {
     derivation_path = [Principal.toBlob(caller)];
     key_id = { algorithm; name = keyName };
     message = fakeMessageHash;
+    aux = null;
   };
 };

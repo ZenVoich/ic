@@ -1,19 +1,19 @@
 [package]
 name = "ic"
-version = "2.1.0"
+version = "3.0.0"
 description = "IC management canister interface (aaaaa-aa)"
 repository = "https://github.com/ZenVoich/ic"
 keywords = [ "ic", "types", "interface", "http" ]
 license = "MIT"
 
 [dependencies]
-base = "0.14.10"
+base = "0.14.14"
 
 [requirements]
 moc = "0.14.10"
 
 [toolchain]
-moc = "0.14.11"
+moc = "0.14.14"
 
 [dev-dependencies]
 test = "2.1.1"

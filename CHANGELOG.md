@@ -1,3 +1,23 @@
+## 3.0.0
+
+Added methods:
+- `subnet_info` - Get subnet information including replica version
+- `vetkd_derive_key` - Derive encrypted keys using vetKD
+- `vetkd_public_key` - Get public keys for vetKD
+
+Added types:
+- `SchnorrAux` - Auxiliary data for Schnorr signatures
+- `SubnetInfoArgs` and `SubnetInfoResult` - For subnet information queries
+- `VetkdCurve`, `VetkdDeriveKeyArgs`, `VetkdDeriveKeyResult`, `VetkdPublicKeyArgs`, `VetkdPublicKeyResult` - For vetKD (Verifiable Encrypted Threshold Key Derivation) support
+
+Updated types:
+- `CanisterSettings` - Added `wasm_memory_threshold` field
+- `CanisterStatusResult` - Added `memory_metrics` field with detailed memory usage information
+- `DefiniteCanisterSettings` - Added `wasm_memory_threshold` field
+- `LogVisibility` - Added `#allowed_viewers` option for fine-grained log access control
+- `SignWithSchnorrArgs` - Added optional `aux` field for auxiliary data
+- `UninstallCodeArgs` - Renamed from `uninstall_code_args` for consistency
+
 ## 2.1.0
 - Added wrappers for `ic` calls like `http_request` that automatically calculate the minimum amount of cycles and attach them with the call (by @Kamirus)
 
