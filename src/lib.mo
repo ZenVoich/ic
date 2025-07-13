@@ -167,14 +167,16 @@ module {
 		method : { #get; #head; #post };
 		max_response_bytes : ?Nat64;
 		body : ?Blob;
-		transform : ?{
-			function : shared query {
-					context : Blob;
-					response : HttpRequestResult;
-				} -> async HttpRequestResult;
-			context : Blob;
-		};
+		transform : ?Transform;
 		headers : [HttpHeader];
+	};
+	public type Transform = {
+		function : shared query (TransformArg) -> async HttpRequestResult;
+		context : Blob;
+	};
+	public type TransformArg = {
+		context : Blob;
+		response : HttpRequestResult;
 	};
 	public type HttpRequestResult = {
 		status : Nat;
