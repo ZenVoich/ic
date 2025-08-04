@@ -1,3 +1,8 @@
+## 3.1.0
+
+Updated types:
+- `HttpRequestArgs` - Added experimental `is_replicated` field to switch between replicated and non-replicated http outcalls
+
 ## 3.0.0
 
 Added methods:

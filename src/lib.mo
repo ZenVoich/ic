@@ -169,6 +169,7 @@ module {
 		body : ?Blob;
 		transform : ?Transform;
 		headers : [HttpHeader];
+		is_replicated : ?Bool;
 	};
 	public type Transform = {
 		function : shared query (TransformArg) -> async HttpRequestResult;

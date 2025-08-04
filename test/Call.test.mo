@@ -8,7 +8,7 @@ import ExpectResult "mo:test/expect/expect-result";
 import IC "../src";
 import Call "../src/Call";
 
-actor {
+persistent actor {
   public shared ({ caller }) func runTests() : async () {
     await test(
       "createCanister should succeed",
@@ -152,6 +152,7 @@ actor {
     body = null;
     max_response_bytes = null;
     transform = null;
+    is_replicated = null;
   };
   let headers = [{ name = "x-test"; value = "test" }];
   let body = ?to_candid ([1, 2, 3]);
