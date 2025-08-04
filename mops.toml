@@ -7,7 +7,7 @@ keywords = [ "ic", "types", "interface", "http" ]
 license = "MIT"
 
 [dependencies]
-base = "0.14.14"
+base = "0.15.1"
 
 [requirements]
 moc = "0.14.10"
