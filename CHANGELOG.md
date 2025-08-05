@@ -1,3 +1,6 @@
+## 3.2.0
+- Decoupled `TransformFunction` from `Transform` type
+
 ## 3.1.0
 
 Updated types:

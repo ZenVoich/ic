@@ -171,13 +171,14 @@ module {
 		headers : [HttpHeader];
 		is_replicated : ?Bool;
 	};
-	public type Transform = {
-		function : shared query (TransformArg) -> async HttpRequestResult;
-		context : Blob;
-	};
 	public type TransformArg = {
 		context : Blob;
 		response : HttpRequestResult;
+	};
+	public type TransformFunction = shared query (TransformArg) -> async HttpRequestResult;
+	public type Transform = {
+		function : TransformFunction;
+		context : Blob;
 	};
 	public type HttpRequestResult = {
 		status : Nat;
